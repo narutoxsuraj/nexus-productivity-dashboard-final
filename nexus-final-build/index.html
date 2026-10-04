@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- NEXUS Native App Shell -->
+  <div class="nexus-app-glow" aria-hidden="true"></div>
+
+  <!-- NEXUS App Opening Screen -->
+  <div id="nexusSplash" class="nexus-splash" aria-hidden="true">
+    <div class="nexus-splash-logo">
+      <span>N</span>
+    </div>
+
+    <div class="nexus-splash-title">NEXUS</div>
+    <div class="nexus-splash-subtitle">PRODUCTIVITY WORKSPACE</div>
+
+    <div class="nexus-splash-loader">
+      <span></span>
+    </div>
+  </div>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050914">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NEXUS">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <title>NEXUS — Productivity Workspace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ==========================================
+       NEXUS FIREBASE AUTH SCREEN
+       ========================================== -->
+
+  <div id="nexusAuthScreen" class="nexus-auth-screen">
+
+    <div class="nexus-auth-card">
+
+      <div class="nexus-auth-logo">
+        <span>N</span>
+      </div>
+
+      <h1>Welcome to NEXUS</h1>
+
+      <p class="nexus-auth-subtitle">
+        Your productivity workspace
+      </p>
+
+      <div class="nexus-auth-tabs">
+
+        <button
+          id="nexusLoginTab"
+          class="active"
+          type="button"
+        >
+          Login
+        </button>
+
+        <button
+          id="nexusSignupTab"
+          type="button"
+        >
+          Sign Up
+        </button>
+
+      </div>
+
+      <form id="nexusAuthForm">
+
+        <div class="nexus-auth-field">
+
+          <label for="nexusAuthEmail">
+            Email
+          </label>
+
+          <input
+            id="nexusAuthEmail"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+        <div class="nexus-auth-field">
+
+          <label for="nexusAuthPassword">
+            Password
+          </label>
+
+          <input
+            id="nexusAuthPassword"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+        <button
+          id="nexusAuthSubmit"
+          class="nexus-auth-submit"
+          type="submit"
+        >
+          Login
+        </button>
+
+      </form>
+
+      <!-- GOOGLE SIGN-IN -->
+      <div class="nexus-auth-divider">
+        <span>OR</span>
+      </div>
+
+      <button
+        id="nexusGoogleBtn"
+        class="nexus-google-btn"
+        type="button"
+      >
+        <span class="google-icon">G</span>
+        Continue with Google
+      </button>
+
+      <p
+        id="nexusAuthMessage"
+        class="nexus-auth-message"
+      ></p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       MAIN NEXUS APP
+       ========================================== -->
+
+  <div class="app-shell">
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <div class="brand-mark">
+          ⚡
+        </div>
+
+        <div>
+          <h1>NEXUS</h1>
+          <span>AI Productivity Workspace</span>
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button
+          class="icon-btn"
+          id="notificationBtn"
+          title="Notifications"
+        >
+          🔔
+          <span id="notificationDot"></span>
+        </button>
+
+        <button
+          class="icon-btn"
+          id="themeBtn"
+          title="Theme"
+        >
+          🌙
+        </button>
+
+        <button
+          class="icon-btn"
+          id="nexusSettingsBtn"
+          title="Settings"
+          type="button"
+        >
+          ⚙️
+        </button>
+
+        <button
+          class="profile-btn"
+          id="profileBtn"
+          title="Profile"
+        >
+
+          <span
+            class="avatar"
+            id="profileAvatar"
+          >
+            N
+          </span>
+
+          <span class="profile-text">
+            <b id="profileName">Naruto</b>
+            <small>Productivity Mode</small>
+          </span>
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <main class="container">
+
+      <!-- DASHBOARD -->
+
+      <section
+        class="page-section active"
+        data-page="dashboard"
+      >
+
+        <div class="hero hero-dashboard">
+
+          <div>
+
+            <p class="eyebrow">
+              DASHBOARD
+            </p>
+
+            <h2 id="greeting">
+              Good evening, Naruto 👋
+            </h2>
+
+            <p class="hero-sub">
+              Plan your day. Focus deeply. Finish strong.
+            </p>
+
+          </div>
+
+          <div
+            class="date-box"
+            id="date"
+          >
+            Loading date...
+          </div>
+
+        </div>
+
+
+        <section class="stats-grid">
+
+          <article class="card stat-card">
+
+            <div class="card-title">
+              <span>🎯</span>
+              Productivity
+            </div>
+
+            <div
+              class="big-number"
+              id="productivity"
+            >
+              0%
+            </div>
+
+            <div class="progress">
+              <span id="productivityBar"></span>
+            </div>
+
+            <p id="productivityMessage">
+              Let's get started.
+            </p>
+
+          </article>
+
+
+          <article class="card stat-card dashboard-focus-card">
+
+            <div class="card-title">
+              <span>⏱️</span>
+              Focus Time
+            </div>
+
+            <div class="big-number">
+              <span id="focusMinutes">0m</span>
+            </div>
+
+            <p>
+              Focused time completed
+            </p>
+
+            <button
+              class="primary-btn"
+              data-nav="focus"
+            >
+              Open Focus Timer
+            </button>
+
+          </article>
+
+
+          <article class="card stat-card">
+
+            <div class="card-title">
+              <span>📊</span>
+              Today's Goal
+            </div>
+
+            <div
+              class="big-number"
+              id="completedCount"
+            >
+              0
+            </div>
+
+            <p>
+              Tasks completed today
+            </p>
+
+            <div class="mini-stats">
+
+              <span>
+                🔥 Streak
+                <b id="streak">0</b>
+              </span>
+
+              <span>
+                🎯 Goal
+                <b id="goalText">4</b>
+              </span>
+
+            </div>
+
+          </article>
+
+        </section>
+
+
+        <section class="dashboard-grid compact-grid">
+
+          <article class="card tasks-card">
+
+            <div class="section-head">
+
+              <div>
+
+                <div class="card-title">
+                  <span>✅</span>
+                  Today's Tasks
+                </div>
+
+                <p>
+                  Your most important work at a glance.
+                </p>
+
+              </div>
+
+              <button
+                class="text-btn"
+                data-nav="tasks"
+              >
+                See all →
+              </button>
+
+            </div>
+
+
+            <div class="task-input-row">
+
+              <input
+                id="taskInput"
+                type="text"
+                maxlength="100"
+                placeholder="What needs to be done?"
+              >
+
+              <button
+                class="primary-btn"
+                id="addTaskBtn"
+              >
+                Add Task
+              </button>
+
+            </div>
+
+
+            <ul
+              class="task-list"
+              id="taskList"
+            ></ul>
+
+            <div
+              class="empty-state"
+              id="taskEmpty"
+            >
+              No tasks yet. Add your first task 🚀
+            </div>
+
+          </article>
+
+
+          <article class="card schedule-card">
+
+            <div class="section-head">
+
+              <div>
+
+                <div class="card-title">
+                  <span>📅</span>
+                  Today's Schedule
+                </div>
+
+                <p>
+                  Keep your day organized.
+                </p>
+
+              </div>
+
+              <button
+                class="text-btn"
+                data-nav="schedule"
+              >
+                View →
+              </button>
+
+            </div>
+
+            <div
+              class="schedule-list"
+              id="scheduleList"
+            ></div>
+
+          </article>
+
+
+          <article class="card notes-card">
+
+            <div class="section-head">
+
+              <div>
+
+                <div class="card-title">
+                  <span>📝</span>
+                  Quick Notes
+                </div>
+
+                <p>
+                  Your notes are saved automatically.
+                </p>
+
+              </div>
+
+              <span
+                class="saved"
+                id="noteSaved"
+              >
+                Saved
+              </span>
+
+            </div>
+
+            <textarea
+              id="notes"
+              placeholder="Write your ideas, reminders or study notes..."
+            ></textarea>
+
+          </article>
+
+
+          <article class="card motivation-card">
+
+            <div class="card-title">
+              <span>💡</span>
+              Daily Motivation
+            </div>
+
+            <blockquote id="quote">
+              “Small progress every day leads to big results.”
+            </blockquote>
+
+            <button
+              class="secondary-btn"
+              id="newQuote"
+            >
+              New quote
+            </button>
+
+          </article>
+
+        </section>
+
+      </section>
+
+
+      <!-- TASKS -->
+
+      <section
+        class="page-section"
+        data-page="tasks"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              WORKSPACE
+            </p>
+
+            <h2>
+              My Tasks
+            </h2>
+
+            <p>
+              Stay consistent, make progress.
+            </p>
+
+          </div>
+
+          <span
+            class="count-pill"
+            id="taskCount"
+          >
+            0 tasks
+          </span>
+
+        </div>
+
+
+        <article class="card full-card">
+
+          <div class="task-input-row large-input">
+
+            <input
+              id="taskInputPage"
+              type="text"
+              maxlength="100"
+              placeholder="Add a new task..."
+            >
+
+            <button
+              class="primary-btn"
+              id="addTaskPage"
+            >
+              + Add Task
+            </button>
+
+          </div>
+
+
+          <div class="task-filters">
+
+            <button class="filter active">
+              All
+            </button>
+
+            <button class="filter">
+              Pending
+            </button>
+
+            <button class="filter">
+              Completed
+            </button>
+
+          </div>
+
+
+          <ul
+            class="task-list task-page-list"
+            id="taskListPage"
+          ></ul>
+
+
+          <div
+            class="empty-state"
+            id="taskEmptyPage"
+          >
+            No tasks yet. Add your first task 🚀
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- AI -->
+
+      <section
+        class="page-section"
+        data-page="ai"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              INTELLIGENCE
+            </p>
+
+            <h2>
+              NEXUS AI Assistant
+            </h2>
+
+            <p>
+              Your personal productivity coach.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <article class="card ai-page-card">
+
+          <div class="ai-avatar">
+            🤖
+          </div>
+
+         <div class="ai-message big-ai" id="aiMessagePage"></div>
+
+          <div class="ai-input-row">
+
+            <input
+              id="aiInputPage"
+              type="text"
+              maxlength="240"
+              placeholder="Ask me anything..."
+            >
+
+            <button
+              class="primary-btn"
+              id="aiSendPage"
+            >
+              ➤
+            </button>
+
+          </div>
+
+
+          <div class="ai-actions">
+
+            <button
+              class="chip"
+              data-ai="focus"
+            >
+              🎯 What should I focus on?
+            </button>
+
+            <button
+              class="chip"
+              data-ai="motivate"
+            >
+              🔥 Motivate me
+            </button>
+
+            <button
+              class="chip"
+              data-ai="plan"
+            >
+              🗓️ Plan my day
+            </button>
+
+            <button
+              class="chip"
+              data-ai="tasks"
+            >
+              📋 Analyze my tasks
+            </button>
+
+          </div>
+
+
+          <div class="ai-status">
+
+            <span class="status-dot"></span>
+
+            Smart AI mode • Ready
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- FOCUS -->
+
+      <section
+        class="page-section"
+        data-page="focus"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              DEEP WORK
+            </p>
+
+            <h2>
+              Focus Timer
+            </h2>
+
+            <p>
+              Stay focused. Build better habits.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <article class="card focus-card">
+
+          <div class="focus-ring">
+
+            <div>
+
+              <strong id="timer">
+                25:00
+              </strong>
+
+              <span>
+                Focus Session 🌿
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="timer-settings">
+
+            <label for="timerDuration">
+              Duration
+            </label>
+
+            <select id="timerDuration">
+
+              <option value="15">
+                15 min
+              </option>
+
+              <option
+                value="25"
+                selected
+              >
+                25 min
+              </option>
+
+              <option value="30">
+                30 min
+              </option>
+
+              <option value="45">
+                45 min
+              </option>
+
+              <option value="60">
+                60 min
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="duration-pills">
+
+            <button data-duration="15">
+              15
+            </button>
+
+            <button
+              class="selected"
+              data-duration="25"
+            >
+              25
+            </button>
+
+            <button data-duration="30">
+              30
+            </button>
+
+            <button data-duration="45">
+              45
+            </button>
+
+            <button data-duration="60">
+              60
+            </button>
+
+          </div>
+
+
+          <div class="button-row center">
+
+            <button
+              class="primary-btn big-btn"
+              id="startFocus"
+            >
+              ▶ Start Focus
+            </button>
+
+            <button
+              class="secondary-btn"
+              id="resetFocus"
+            >
+              Reset
+            </button>
+
+          </div>
+
+
+          <p id="timerStatus">
+            Ready for a focus session
+          </p>
+
+        </article>
+
+      </section>
+
+
+      <!-- SCHEDULE -->
+
+      <section
+        class="page-section"
+        data-page="schedule"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              PLANNING
+            </p>
+
+            <h2>
+              Today's Schedule
+            </h2>
+
+            <p>
+              Organize your day with clear time blocks.
+            </p>
+
+          </div>
+
+          <button
+            class="primary-btn schedule-edit-btn"
+            id="scheduleBtn"
+          >
+            ✎ Edit Schedule
+          </button>
+
+        </div>
+
+
+        <article class="card schedule-page-card">
+
+          <div
+            class="schedule-list large-schedule"
+            id="scheduleListPage"
+          ></div>
+
+        </article>
+
+      </section>
+
+
+      <!-- STATS -->
+
+      <section
+        class="page-section"
+        data-page="stats"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              INSIGHTS
+            </p>
+
+            <h2>
+              Analytics
+            </h2>
+
+            <p>
+              Track your progress and stay motivated.
+            </p>
+
+          </div>
+
+
+          <select
+            id="goalSelect"
+            title="Daily goal"
+          >
+
+            <option value="4">
+              4 tasks
+            </option>
+
+            <option value="6">
+              6 tasks
+            </option>
+
+            <option value="8">
+              8 tasks
+            </option>
+
+            <option value="10">
+              10 tasks
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <section class="analytics-grid">
+
+          <article class="card analytics-card">
+
+            <div class="card-title">
+              📈 Weekly Productivity
+            </div>
+
+            <div
+              class="bars tall-bars"
+              id="bars"
+            ></div>
+
+            <div class="legend">
+
+              <span>
+                <i></i>
+                Completed
+              </span>
+
+              <span>
+                Goal:
+                <b id="goalTextStats">4</b>
+              </span>
+
+            </div>
+
+          </article>
+
+
+          <article class="card stat-card">
+
+            <div class="card-title">
+              ✅ Tasks Completed
+            </div>
+
+            <div
+              class="big-number"
+              id="completedStats"
+            >
+              0
+            </div>
+
+            <p>
+              Keep building momentum.
+            </p>
+
+          </article>
+
+
+          <article class="card stat-card">
+
+            <div class="card-title">
+              ⏱️ Focus Time
+            </div>
+
+            <div
+              class="big-number"
+              id="focusStats"
+            >
+              0m
+            </div>
+
+            <p>
+              Total focused time.
+            </p>
+
+          </article>
+
+
+          <article class="card stat-card">
+
+            <div class="card-title">
+              🔥 Day Streak
+            </div>
+
+            <div
+              class="big-number"
+              id="streakStats"
+            >
+              0
+            </div>
+
+            <p>
+              Consistency matters.
+            </p>
+
+          </article>
+
+        </section>
+
+      </section>
+
+
+      <!-- SETTINGS -->
+
+      <section
+        class="page-section"
+        data-page="settings"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              PREFERENCES
+            </p>
+
+            <h2>
+              Settings
+            </h2>
+
+            <p>
+              Customize your NEXUS experience.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <section class="settings-grid">
+
+          <article class="card profile-settings">
+
+            <div class="profile-preview">
+
+              <span
+                class="avatar large-avatar"
+                id="settingsAvatar"
+              >
+                N
+              </span>
+
+              <div>
+
+                <h3 id="settingsName">
+                  Naruto
+                </h3>
+
+                <p>
+                  Productivity Mode
+                </p>
+
+              </div>
+
+              <button
+                class="primary-btn"
+                id="settingsProfileBtn"
+                type="button"
+              >
+                Change Profile
+              </button>
+
+            </div>
+
+          </article>
+
+
+          <article class="card settings-list">
+
+            <button
+              class="setting-row"
+              id="settingsThemeBtn"
+              type="button"
+            >
+
+              <span>
+                🌙 <b>Theme</b>
+              </span>
+
+              <span>
+                Change ›
+              </span>
+
+            </button>
+
+
+            <button
+              class="setting-row"
+              data-nav="stats"
+              type="button"
+            >
+
+              <span>
+                🎯 <b>Daily Goal</b>
+              </span>
+
+              <span>
+                Open ›
+              </span>
+
+            </button>
+
+
+            <button
+              class="setting-row"
+              id="settingsNotificationBtn"
+              type="button"
+            >
+
+              <span>
+                🔔 <b>Notifications</b>
+              </span>
+
+              <span>
+                ›
+              </span>
+
+            </button>
+
+
+            <div class="setting-row static">
+
+              <span>
+                ☁️ <b>Cloud Sync</b>
+              </span>
+
+              <span>
+                Firebase
+              </span>
+
+            </div>
+
+
+            <div class="setting-row static">
+
+              <span>
+                ⚡ <b>About NEXUS</b>
+              </span>
+
+              <span>
+                v1.0
+              </span>
+
+            </div>
+
+
+            <button
+              class="setting-row logout-setting"
+              id="settingsLogoutBtn"
+              type="button"
+            >
+
+              <span>
+                🚪 <b>Logout</b>
+              </span>
+
+              <span>
+                ›
+              </span>
+
+            </button>
+
+          </article>
+
+        </section>
+
+      </section>
+
+    </main>
+
+
+    <!-- BOTTOM NAVIGATION -->
+
+    <nav
+      class="bottom-nav"
+      id="bottomNav"
+      aria-label="NEXUS navigation"
+    >
+
+      <span
+        class="nav-glass-indicator"
+        aria-hidden="true"
+      ></span>
+
+      <button
+        class="nav-item active"
+        data-page="dashboard"
+      >
+        <span>⌂</span>
+        <small>Home</small>
+      </button>
+
+      <button
+        class="nav-item"
+        data-page="tasks"
+      >
+        <span>☑</span>
+        <small>Work</small>
+      </button>
+
+      <button
+        class="nav-item"
+        data-page="focus"
+      >
+        <span>◷</span>
+        <small>Focus</small>
+      </button>
+
+      <button
+        class="nav-item"
+        data-page="ai"
+      >
+        <span>♙</span>
+        <small>AI</small>
+      </button>
+
+    </nav>
+
+
+    <footer>
+
+      <span>
+        ⚡ NEXUS Productivity Workspace
+      </span>
+
+      <span>
+        Built with HTML • CSS • JavaScript
+        (Creator Naruto x Suraj)
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <!-- TOAST -->
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
+
+
+  <!-- NOTIFICATION MODAL -->
+
+  <div
+    class="modal hidden"
+    id="notificationModal"
+  >
+
+    <div class="modal-box">
+
+      <button
+        class="modal-close"
+        data-close="notificationModal"
+      >
+        ×
+      </button>
+
+      <h3>
+        🔔 Notifications
+      </h3>
+
+      <div class="notification-item">
+        🎯 Your focus session is ready.
+      </div>
+
+      <div class="notification-item">
+        📝 Your notes are saved locally.
+      </div>
+
+      <div class="notification-item">
+        🚀 Keep building your NEXUS project.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PROFILE MODAL -->
+
+  <div
+    class="modal hidden"
+    id="profileModal"
+  >
+
+    <div class="modal-box">
+
+      <button
+        class="modal-close"
+        data-close="profileModal"
+      >
+        ×
+      </button>
+
+      <h3>
+        👤 Profile
+      </h3>
+
+      <label>
+        Your name
+      </label>
+
+      <input
+        id="nameInput"
+        type="text"
+        maxlength="30"
+        placeholder="Enter your name"
+      >
+
+      <label>
+        Profile picture
+      </label>
+
+      <input
+        id="profileImageInput"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+      >
+
+      <button
+        class="secondary-btn full"
+        id="removeProfileImage"
+      >
+        Remove Picture
+      </button>
+
+      <button
+        class="primary-btn full"
+        id="saveProfile"
+      >
+        Save Profile
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- SCHEDULE MODAL -->
+
+  <div
+    class="modal hidden"
+    id="scheduleModal"
+  >
+
+    <div class="modal-box schedule-modal-box">
+
+      <button
+        class="modal-close"
+        data-close="scheduleModal"
+      >
+        ×
+      </button>
+
+      <h3>
+        📅 Edit Today's Schedule
+      </h3>
+
+      <div id="scheduleEditor"></div>
+
+      <button
+        class="secondary-btn full"
+        id="addScheduleItem"
+      >
+        + Add Schedule
+      </button>
+
+      <button
+        class="primary-btn full"
+        id="saveSchedule"
+      >
+        Save Schedule
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       NEXUS SCRIPTS
+       ========================================== -->
+
+  <script src="script.js"></script>
+  <script src="ai-phase3.js"></script>
+  <script src="nexus-notifications.js"></script>
+
+  <script
+    type="module"
+    src="firebase-config.js"
+  ></script>
+
+  <script
+    type="module"
+    src="firebase-firestore.js"
+  ></script>
+
+  <script
+    type="module"
+    src="firebase-auth.js"
+  ></script>
+
+  <script src="pwa-install.js"></script>
+
+</body>
+</html>
