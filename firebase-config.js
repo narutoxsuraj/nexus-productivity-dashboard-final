@@ -1,5 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+  initializeAuth,
+  indexedDBLocalPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDXduHzBZQJtDeJPn1corJBoTyndaljRLo",
@@ -10,9 +14,15 @@ const firebaseConfig = {
   appId: "1:1056394018384:web:61daa6f0ef42b56b05db55"
 };
 
-
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+
+// Explicit persistent auth storage is more reliable on mobile browsers.
+const auth = initializeAuth(app, {
+  persistence: [
+    indexedDBLocalPersistence,
+    browserLocalPersistence
+  ]
+});
 
 window.nexusFirebaseAuth = auth;
 window.nexusFirebaseApp = app;

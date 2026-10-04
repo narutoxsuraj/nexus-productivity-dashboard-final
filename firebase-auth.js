@@ -8,9 +8,10 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  browserPopupRedirectResolver,
   onAuthStateChanged,
   signOut
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
 const auth = window.nexusFirebaseAuth;
@@ -366,7 +367,8 @@ if (!auth) {
 
         await signInWithPopup(
           auth,
-          provider
+          provider,
+          browserPopupRedirectResolver
         );
 
 
@@ -382,6 +384,27 @@ if (!auth) {
           error
         );
 
+        // Some mobile Chromium builds occasionally lose the OAuth helper
+        // state on the first attempt. Retry once without changing the
+        // existing login flow.
+        const missingState =
+          String(error?.message || "").toLowerCase().includes("missing initial state") ||
+          String(error?.code || "").toLowerCase().includes("internal");
+
+        if (missingState) {
+          try {
+            await new Promise((resolve) => setTimeout(resolve, 900));
+            await signInWithPopup(
+              auth,
+              provider,
+              browserPopupRedirectResolver
+            );
+            showMessage("Google login successful! Opening NEXUS...");
+            return;
+          } catch (retryError) {
+            console.error("NEXUS Google retry failed:", retryError);
+          }
+        }
 
         let errorText =
           "Google Sign-in failed. Please try again.";
