@@ -1,0 +1,68 @@
+name: Build NEXUS Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout NEXUS
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Capacitor Assets
+        run: npm install --no-save @capacitor/assets
+
+      - name: Prepare web assets
+        shell: bash
+        run: |
+          set -e
+          rm -rf www
+          mkdir -p www/icons
+          cp index.html style.css script.js ai-phase3.js nexus-notifications.js www/
+          cp firebase-config.js firebase-firestore.js firebase-auth.js www/
+          cp pwa-install.js sw.js manifest.webmanifest www/
+          cp icons/icon-192.png icons/icon-512.png www/icons/
+
+      - name: Add Android platform
+        run: npx cap add android
+        
+
+      - name: Generate Capacitor app assets
+        run: npx @capacitor/assets generate --android
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload NEXUS APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXUS-debug-APK
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
